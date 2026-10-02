@@ -1,0 +1,31 @@
+{
+  "params": {
+    "SignalTF": "1h",
+    "DonchianPeriod": 200,
+    "TrendEMA": 0,
+    "ATRPeriod": 14,
+    "SL_ATR": 2.0,
+    "Trail_ATR": 4.0,
+    "TP_R": 0.0,
+    "RiskPercent": 3.0,
+    "MaxRiskAtMinLot": 6.0,
+    "MaxDrawdownPct": 0.0,
+    "CloseOnFriday": false,
+    "FridayCloseHour": 21
+  },
+  "stats": {
+    "start": 300.0,
+    "final": 6818.39,
+    "multiple": 22.73,
+    "cagr_pct": 37.5,
+    "max_dd_pct": -35.7,
+    "trades": 463,
+    "win_rate_pct": 36.9,
+    "profit_factor": 1.36,
+    "avg_R": 0.317,
+    "best_R": 19.2,
+    "months_to_16_7x": 93.3,
+    "kill": false,
+    "skipped": 0
+  }
+}

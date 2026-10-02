@@ -1,58 +1,36 @@
-# Gold (XAUUSD) Session Momentum Strategy
+# Gold (XAUUSD) Trend Breakout Strategy
 
-EA: `Code/MQL5_2020_06_15/Experts/Advisors/EA_Gold_SessionMomentum.mq5`
-Presets: `Code/MQL5_2020_06_15/Presets/*.set`
+* EA: `Code/MQL5_2020_06_15/Experts/Advisors/EA_Gold_TrendBreakout.mq5`
+* Presets: `Code/MQL5_2020_06_15/Presets/GTB_*.set`
+* Backtest + full results: [`Backtest/RESULTS.md`](../Backtest/RESULTS.md)
 
-> **Risk warning:** No strategy guarantees profit. Gold moves $30–$100+ per day and
-> can gap on news (CPI, NFP, FOMC). Backtest and run on a demo account first.
+> **Risk warning:** No strategy guarantees profit. Every trade has a stop loss. Without one,
+> a single gold move of $30–$100 can wipe a small account. Test on demo first.
 
-## Why this design
-Gold trends strongly once London and New York open, after a quiet Asian session.
-The EA only trades **with the higher-timeframe trend** and **during liquid hours**.
-It lets winners run (trailing stop) and cuts losers quickly (ATR stop). That gives it
-a positive expectancy profile even with a win rate under 50%.
-
-## Rules
-| Part | Rule |
+## Rules (chart: XAUUSD H1)
+| | |
 |---|---|
-| Trend filter (H1) | EMA50 > EMA200 and close > EMA200 → longs only. Reverse for shorts. ADX(14) ≥ 20 or no trade. |
-| Setup A: Asian breakout (M15) | Build the high/low from 00:00–07:00 server time. From 08:00–18:00, enter on the **first** M15 close beyond the range ± 0.1×ATR in the trend direction. One per side per day. Range must be 1.5–10 ATR. |
-| Setup B: Pullback (M15) | Bar dips to EMA21, closes back above it as a bullish candle (bearish for shorts), RSI 45–70 (30–55 for shorts). |
-| Stop loss | 1.5 × ATR(14, M15) |
-| Take profit | 2.5R (standard) / 3R (aggressive) |
-| Trade management | At +1R: close 50% and move the stop to entry + 0.1 ATR. After that, trail at 2 × ATR. |
-| Risk controls | Risk % per trade, max spread, max 3 trades/day, daily loss limit, equity drawdown kill switch, flat on Friday at 20:00. |
+| **Buy** | The last closed H1 candle closes **above the highest high of the previous 200 candles**, and the candle before did not (fresh breakout). |
+| **Sell** | The last closed H1 candle closes **below the lowest low of the previous 200 candles** (fresh breakout). |
+| **Stop loss** | 2 × ATR(14) from entry. Always set. |
+| **Trailing stop** | 4 × ATR(14) behind price; it only moves in your favour. It starts moving once the trade is about +1R. |
+| **Take profit** | None: let trends run. Trades of +10R to +19R pay for the many small losses. |
+| **Positions** | One at a time. Signals during an open trade are ignored. |
+| **Size** | Risk % of equity per trade, from the stop distance. |
 
-## The $300 → $5,000 goal: honest math
-That is a **~16.7× return**. On gold with 0.01 lot minimum:
+Expect a **~37% win rate**. Most trades are small losses; a few huge winners make the profit.
+Losing streaks of 10–12 trades happened in the backtest. Do not switch the EA off during one.
 
-* 0.01 lot ≈ $1 per $1 move. A 1.5×ATR stop on M15 is about $6–$10, so **the smallest
-  possible trade already risks 2–3% of $300**. That's why the aggressive preset uses 3%
-  risk and allows the minimum lot up to 5%.
-* Suppose the edge is 40% wins at about 2.5R average and 60% losses at -1R. Expectancy is
-  then ≈ +0.4R per trade. At 3% risk that is ≈ +1.2% per trade, compounded.
-  Then 300 → 5,000 needs roughly **ln(16.7)/ln(1.012) ≈ 235 trades**. At 1–2 trades/day
-  that is about **6–10 months, if the edge holds**.
-* At 3% risk, 10 losses in a row (that happens) means about -26%. **Raising risk to 10%+
-  per trade to "go faster" makes losing the account the most likely outcome.** Don't.
-
-Realistic path:
-1. Demo-test 1 month with the aggressive preset. Confirm spreads and behaviour.
-2. Go live with $300 on a **cent or micro account** if you can (finer lot sizing = real % risk).
-3. Once the account is above ~$1,000, switch to the **standard preset (1%)** to protect gains.
-4. Withdraw your initial $300 once you're up 3×.
+## $300 → $5,000 plan
+1. Open a **cent account** (or start with $1,000+ on a standard account), raw/ECN spread under $0.40.
+2. Load `GTB_Balanced_3pct.set` (3% risk). Backtest: ×22.7 over 10 years, $5k in ~7–8 years, max drawdown −36%.
+   For faster growth, use `GTB_Aggressive_5pct.set`: $5k in ~5 years in the backtest, **but expect a 50%+ drawdown**.
+3. Never raise risk above 5%. At 10% risk, Monte Carlo gives a 90% chance of an 80%+ drawdown.
+4. After reaching $5,000, switch to `GTB_Conservative_1pct.set` to keep it.
 
 ## Installation
-1. Copy `EA_Gold_SessionMomentum.mq5` into `MQL5/Experts/` and compile it in MetaEditor (F7).
-2. Attach it to an **XAUUSD M15** chart. Enable Algo Trading.
-3. Load a preset from `Presets/` (Inputs → Load).
-4. **Check your broker's server time.** The session hours are server hours. The defaults
-   assume a GMT+2/+3 server (most MT5 brokers). Shift `AsianStartHour`,
-   `AsianEndHour`, `TradeStartHour` and `TradeEndHour` if yours differs.
-5. Use an ECN/raw-spread account. Gold spreads above $0.60 kill the edge.
-
-## Backtesting in MT5 Strategy Tester
-* Symbol XAUUSD, timeframe M15, model "Every tick based on real ticks", 2+ years.
-* Optimize carefully (avoid curve-fitting): `SL_ATR` 1.0–2.5, `TP_R` 2–4, `ADXMin` 15–30,
-  `Trail_ATR` 1.5–3. Validate on an out-of-sample period you did not optimize on.
-* Avoid trading around high-impact news. Turn the EA off 30 minutes before NFP, CPI and FOMC.
+1. Copy `EA_Gold_TrendBreakout.mq5` to `MQL5/Experts/` and compile it in MetaEditor (F7).
+2. Open an **XAUUSD H1** chart and attach the EA. Enable Algo Trading.
+3. Inputs → Load → choose a preset from `Presets/`.
+4. Keep the terminal running 24/5 (VPS recommended). The trailing stop is updated by the EA.
+5. Verify in the MT5 Strategy Tester (XAUUSD, H1, "Every tick based on real ticks", your broker's data).

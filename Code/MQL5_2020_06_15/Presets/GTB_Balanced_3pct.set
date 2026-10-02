@@ -1,0 +1,16 @@
+; EA_Gold_TrendBreakout - BALANCED (recommended for $300 -> $5,000)
+; Attach to XAUUSD H1. Backtest 2012-2022 from $300: x22.7, max drawdown -36%, $5k reached in ~93 months
+MagicNumber=777002
+SignalTF=16385
+DonchianPeriod=200
+TrendEMA=0
+ATRPeriod=14
+SL_ATR=2.0
+Trail_ATR=4.0
+TP_R=0.0
+RiskPercent=3.0
+MaxRiskAtMinLot=6.0
+MaxSpreadPrice=0.80
+MaxDrawdownPct=0
+CloseOnFriday=false
+FridayCloseHour=21

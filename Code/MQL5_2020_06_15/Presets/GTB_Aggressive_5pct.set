@@ -1,0 +1,16 @@
+; EA_Gold_TrendBreakout - AGGRESSIVE - expect drawdowns over 50%
+; Attach to XAUUSD H1. Backtest 2012-2022 from $300: x58, max drawdown -54%, $5k reached in ~62 months
+MagicNumber=777002
+SignalTF=16385
+DonchianPeriod=200
+TrendEMA=0
+ATRPeriod=14
+SL_ATR=2.0
+Trail_ATR=4.0
+TP_R=0.0
+RiskPercent=5.0
+MaxRiskAtMinLot=8.0
+MaxSpreadPrice=0.80
+MaxDrawdownPct=0
+CloseOnFriday=false
+FridayCloseHour=21
