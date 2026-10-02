@@ -1,0 +1,17 @@
+; EA_Gold_SessionMomentum - standard preset (accounts $1000+)
+MagicNumber=777001
+MaxOpenPositions=1
+MaxTradesPerDay=3
+RiskPercent=1.0
+MaxRiskAtMinLot=2.0
+MaxDailyLossPct=3.0
+MaxDrawdownPct=15.0
+MaxSpreadPrice=0.60
+ADXMin=20.0
+SL_ATR=1.5
+TP_R=2.5
+UsePartialClose=true
+PartialPercent=50.0
+PartialAtR=1.0
+UseTrailing=true
+Trail_ATR=2.0

@@ -21,3 +21,9 @@ To cite our work
   number={},
   pages={1-1},
   doi={10.1109/ACCESS.2021.3127570}}
+
+## Gold strategy (XAUUSD)
+
+A separate, self-contained EA for gold is in `MQL5_2020_06_15/Experts/Advisors/EA_Gold_SessionMomentum.mq5`
+(trend-filtered Asian-range breakout + pullback, ATR risk management). It only needs the standard `Trade\Trade.mqh` library.
+See [docs/GOLD_STRATEGY.md](docs/GOLD_STRATEGY.md) for rules, presets, and risk notes.
