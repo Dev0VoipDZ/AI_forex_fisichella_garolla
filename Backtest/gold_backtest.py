@@ -1,10 +1,11 @@
 """
-Backtester for EA_Gold_TrendBreakout.mq5 (XAUUSD).
+Backtester for EA_Gold_TrendBreakout.mq5 v3 (XAUUSD).
 
 Mirrors the EA: signals on closed SignalTF bars (default H1) = fresh close
 beyond the DonchianPeriod channel; entry at the next bar's open (+spread for
 buys); SL = SL_ATR x ATR; trailing stop Trail_ATR x ATR updated on every price
-move; one position at a time; risk-% sizing with 0.01 lot minimum, 0.01 step,
+move; data-mined momentum filter and volatility-regime risk multiplier;
+one position at a time; risk-% sizing with 0.01 lot minimum, 0.01 step,
 100 oz contract, 1:100 margin; optional drawdown kill switch and Friday flat.
 
 Execution is walked through M15 bars (bullish bars open->low->high->close,
@@ -30,7 +31,9 @@ import pandas as pd
 
 DEFAULTS = dict(SignalTF="1h", DonchianPeriod=200, TrendEMA=0, ATRPeriod=14,
                 SL_ATR=2.0, Trail_ATR=4.0, TP_R=0.0,
-                RiskPercent=3.0, MaxRiskAtMinLot=6.0, MaxDrawdownPct=0.0,
+                MomentumBars=0, MinMomentumATR=5.0, VolBars=168, VolLookbackDays=250,
+                LowVolRatio=0.8, LowVolRiskMult=2.0,
+                RiskPercent=2.0, MaxRiskAtMinLot=6.0, MaxDrawdownPct=0.0,
                 CloseOnFriday=False, FridayCloseHour=21)
 
 CONTRACT = 100.0          # oz per lot
@@ -70,17 +73,26 @@ def signals(m15, p):
     if p["TrendEMA"] > 0:
         e = ema(c, p["TrendEMA"]).values
         fresh = np.where(((fresh > 0) & (c.values > e)) | ((fresh < 0) & (c.values < e)), fresh, 0)
-    sig_df["fresh"] = fresh
     sig_df["atr"] = atr_sma(sig_df, p["ATRPeriod"])
+    if p["MomentumBars"] > 0:
+        move = (c - c.shift(p["MomentumBars"])).values * fresh
+        fresh = np.where(move >= p["MinMomentumATR"] * sig_df.atr.values, fresh, 0)
+    sig_df["fresh"] = fresh
+    # volatility regime: std of log returns over VolBars / its median, sampled once per day
+    bpd = max(1, int(pd.Timedelta("1D") / pd.Timedelta(p["SignalTF"])))
+    vol = np.log(c).diff().rolling(p["VolBars"]).std()
+    med = pd.concat([vol.shift(bpd * k) for k in range(p["VolLookbackDays"])], axis=1).median(axis=1, skipna=False)
+    sig_df["mult"] = np.where((vol / med) < p["LowVolRatio"], p["LowVolRiskMult"], 1.0)
 
     # value of the last *closed* signal bar, valid from the open of the next one
-    nxt = sig_df[["fresh", "atr"]].copy()
+    nxt = sig_df[["fresh", "atr", "mult"]].copy()
     nxt.index = nxt.index + pd.tseries.frequencies.to_offset(p["SignalTF"])
     # The signal is only acted on at the first M15 bar of the new signal bar
     cur = m15.index.floor(p["SignalTF"])
     out = pd.DataFrame(index=m15.index)
     out["atr"] = nxt.atr.reindex(cur).values
     first = np.r_[True, cur[1:] != cur[:-1]]
+    out["mult"] = nxt.mult.reindex(cur).fillna(1.0).values
     out["sig"] = np.where(first, nxt.fresh.reindex(cur).fillna(0).values, 0).astype(int)
     return out
 
@@ -89,7 +101,7 @@ def run(m15, p, balance0, spread, commission):
     s = signals(m15, p)
     T = m15.index
     O, H, L, C = (m15[c].values for c in ("open", "high", "low", "close"))
-    SIG, ATR = s.sig.values, s.atr.values
+    SIG, ATR, MULT = s.sig.values, s.atr.values, s.mult.values
     DOW, HOUR = T.dayofweek.values, T.hour.values
 
     balance, peak, kill = balance0, balance0, False
@@ -131,7 +143,7 @@ def run(m15, p, balance0, spread, commission):
             sld = p["SL_ATR"] * atr
             equity = balance
             loss_lot = sld * CONTRACT
-            lots = min(math.floor(equity * p["RiskPercent"] / 100 / loss_lot / LOT_STEP + 1e-9) * LOT_STEP, MAX_LOT)
+            lots = min(math.floor(equity * p["RiskPercent"] * MULT[i] / 100 / loss_lot / LOT_STEP + 1e-9) * LOT_STEP, MAX_LOT)
             while lots >= MIN_LOT and lots * CONTRACT * px / LEVERAGE > equity * 0.9:
                 lots -= LOT_STEP
             if (lots < MIN_LOT and p["MaxRiskAtMinLot"] > 0

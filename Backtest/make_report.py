@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 SURF, INK, INK2, GRID = "#fcfcfb", "#0b0b0b", "#52514e", "#e6e5e0"
-SERIES = [("risk2", "2% risk", "#2a78d6"), ("risk3", "3% risk", "#eb6834"), ("risk5", "5% risk", "#1baf7a")]
+SERIES = [("v2_risk3", "v2 flat 3%", "#2a78d6"), ("v3_risk2", "v3 data-mined 2%", "#eb6834"), ("v3_risk3", "v3 data-mined 3%", "#1baf7a")]
 
 fig, ax = plt.subplots(figsize=(10, 5.2), dpi=150, facecolor=SURF)
 ax.set_facecolor(SURF)
@@ -21,7 +21,7 @@ ax.text(pd.Timestamp("2019-02-01"), 150, "unseen data (2019+)", color=INK2, font
 ax.set_yscale("log")
 ax.set_yticks([100, 300, 1000, 3000, 10000, 30000])
 ax.set_yticklabels(["$100", "$300", "$1k", "$3k", "$10k", "$30k"])
-ax.set_title("Gold Trend Breakout EA: $300 start, XAUUSD 2012-2022 (log scale)", color=INK, loc="left", fontsize=12)
+ax.set_title("Gold Trend Breakout EA v2 vs v3: $300 start, XAUUSD 2012-2022 (log scale)", color=INK, loc="left", fontsize=12)
 ax.tick_params(colors=INK2, labelsize=9)
 for s in ax.spines.values():
     s.set_visible(False)
