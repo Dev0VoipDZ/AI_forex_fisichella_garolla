@@ -1,0 +1,25 @@
+# Ladder ticket simulator config (see Backtest/ladder.py)
+# A "ticket" is a small account that is either run up to `target` or burnt to `floor`.
+# This is a measurement tool, not a recommendation.
+
+start_balance = 200.0
+target        = 3000.0
+risk_pct      = 30.0          # % of current equity risked per trade (stop-loss distance)
+floor         = 80.0          # ticket is dead at or below this equity
+time_box_days = 30            # calendar days the ticket is allowed to run
+sessions      = ["london", "ny"]   # only trades opened in these sessions are used
+news_blackout = true          # drop trades opened within +-30 min of a calendar event
+news_calendar = "data/news-calendar.csv"   # columns: time (server time), event
+risk_levels   = [10.0, 20.0, 30.0, 40.0, 50.0]
+tickets       = 10000
+seed          = 20261010
+
+# Trade list the distribution is built from (cost-adjusted backtest output)
+trades_csv    = "results/v3_10k_risk2/trades.csv"
+strategy      = "GTB_v3"
+
+# Session windows in broker server time (GMT+2/+3), hour of trade open, [start, end)
+[session_hours]
+asia   = [1, 9]
+london = [9, 17]
+ny     = [15, 23]
