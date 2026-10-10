@@ -1,5 +1,5 @@
 """
-Backtester for EA_Gold_TrendBreakout.mq5 v3 (XAUUSD).
+Backtester for EA_Gold_TrendBreakout.mq5 v4 (XAUUSD).
 
 Mirrors the EA: signals on closed SignalTF bars (default H1) = fresh close
 beyond the DonchianPeriod channel; entry at the next bar's open (+spread for
@@ -30,10 +30,10 @@ import numpy as np
 import pandas as pd
 
 DEFAULTS = dict(SignalTF="1h", DonchianPeriod=200, TrendEMA=0, ATRPeriod=14,
-                SL_ATR=2.0, Trail_ATR=4.0, TP_R=0.0,
+                SL_ATR=1.5, Trail_ATR=5.0, TP_R=0.0,
                 MomentumBars=0, MinMomentumATR=5.0, VolBars=168, VolLookbackDays=250,
                 LowVolRatio=0.8, LowVolRiskMult=2.0,
-                RiskPercent=2.0, MaxRiskAtMinLot=6.0, MaxDrawdownPct=0.0,
+                RiskPercent=1.5, MaxRiskAtMinLot=6.0, MaxDrawdownPct=0.0,
                 CloseOnFriday=False, FridayCloseHour=21)
 
 CONTRACT = 100.0          # oz per lot

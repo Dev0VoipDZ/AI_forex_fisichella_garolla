@@ -15,8 +15,8 @@ tickets       = 10000
 seed          = 20261010
 
 # Trade list the distribution is built from (cost-adjusted backtest output)
-trades_csv    = "results/v3_10k_risk2/trades.csv"
-strategy      = "GTB_v3"
+trades_csv    = "results/v4_10k_risk1.5/trades.csv"
+strategy      = "GTB_v4"
 
 # Session windows in broker server time (GMT+2/+3), hour of trade open, [start, end)
 [session_hours]

@@ -1,12 +1,12 @@
-; EA_Gold_TrendBreakout v3 - BALANCED (recommended for $300 -> $5,000): 2% risk, 4% in quiet markets
-; Attach to XAUUSD H1. Backtest 2012-2022: $300 -> $8,502, max drawdown -32%, $5k after ~92 months
+; EA_Gold_TrendBreakout v4 - BALANCED (recommended): 1.5% risk, 3% in quiet markets
+; Attach to XAUUSD H1. Backtest 2012-2022 from $300: $300 -> $14,368 (x48), max drawdown -36%, $5k after ~92 months
 MagicNumber=777002
 SignalTF=16385
 DonchianPeriod=200
 TrendEMA=0
 ATRPeriod=14
-SL_ATR=2.0
-Trail_ATR=4.0
+SL_ATR=1.5
+Trail_ATR=5.0
 TP_R=0.0
 MomentumBars=0
 MinMomentumATR=5.0
@@ -14,9 +14,9 @@ VolBars=168
 VolLookbackDays=250
 LowVolRatio=0.8
 LowVolRiskMult=2.0
-RiskPercent=2.0
+RiskPercent=1.5
 MaxRiskAtMinLot=6.0
-MaxSpreadPrice=0.80
+MaxSpreadPrice=0.60
 MaxDrawdownPct=0
 CloseOnFriday=false
 FridayCloseHour=21

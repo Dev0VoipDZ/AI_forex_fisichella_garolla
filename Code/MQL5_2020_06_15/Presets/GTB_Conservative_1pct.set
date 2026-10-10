@@ -1,0 +1,22 @@
+; EA_Gold_TrendBreakout v4 - CONSERVATIVE: 1% risk, 2% in quiet markets, 30% equity kill switch
+; Attach to XAUUSD H1. Backtest 2012-2022 from $300: $300 -> $5,425 (x18), max drawdown -29%
+MagicNumber=777002
+SignalTF=16385
+DonchianPeriod=200
+TrendEMA=0
+ATRPeriod=14
+SL_ATR=1.5
+Trail_ATR=5.0
+TP_R=0.0
+MomentumBars=0
+MinMomentumATR=5.0
+VolBars=168
+VolLookbackDays=250
+LowVolRatio=0.8
+LowVolRiskMult=2.0
+RiskPercent=1.0
+MaxRiskAtMinLot=3.0
+MaxSpreadPrice=0.60
+MaxDrawdownPct=30
+CloseOnFriday=false
+FridayCloseHour=21

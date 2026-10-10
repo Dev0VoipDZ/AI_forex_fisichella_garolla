@@ -4,10 +4,11 @@
 //|                                                                  |
 //+------------------------------------------------------------------+
 #property copyright "AI_forex_fisichella_garolla"
-#property version   "3.00"
-#property description "Gold (XAUUSD) data-mined trend breakout: fresh close beyond the N-bar"
-#property description "Donchian channel, weekly-momentum filter and volatility-regime sizing"
-#property description "(both found by mining 2012-2018 gold data), ATR stop and trailing."
+#property version   "4.00"
+#property description "Gold (XAUUSD) trend breakout v4: fresh H1 close beyond the 200-bar"
+#property description "Donchian channel, 1.5xATR stop, 5xATR trailing stop, and volatility-"
+#property description "regime position sizing mined from 2012-2018 gold data. Backtested"
+#property description "2012-2022, ~900 variants tested, see Backtest/RESULTS.md."
 #property description "Backtested 2012-2022 (see Backtest/RESULTS.md). High risk."
 
 /*
@@ -49,8 +50,8 @@ sinput string STRAT;                        // STRATEGY
 input int    DonchianPeriod    = 200;       // Donchian channel length (bars)
 input int    TrendEMA          = 0;         // Optional EMA trend filter (0 = off)
 input int    ATRPeriod         = 14;        // ATR period
-input double SL_ATR            = 2.0;       // Initial stop (x ATR)
-input double Trail_ATR         = 4.0;       // Trailing stop (x ATR), 0 = off
+input double SL_ATR            = 1.5;       // Initial stop (x ATR)
+input double Trail_ATR         = 5.0;       // Trailing stop (x ATR), 0 = off
 input double TP_R              = 0.0;       // Take profit (x initial risk), 0 = none
 
 sinput string DATA;                         // DATA-MINED FILTERS
@@ -62,9 +63,9 @@ input double LowVolRatio       = 0.8;       // Low-volatility regime threshold (
 input double LowVolRiskMult    = 2.0;       // Risk multiplier in low-volatility regime, 1 = off
 
 sinput string RISK;                         // RISK MANAGEMENT
-input double RiskPercent       = 2.0;       // Base risk per trade (% of equity)
+input double RiskPercent       = 1.5;       // Base risk per trade (% of equity)
 input double MaxRiskAtMinLot   = 6.0;       // Allow min lot if its risk <= this % (small accounts)
-input double MaxSpreadPrice    = 0.80;      // Max spread to open a trade (USD)
+input double MaxSpreadPrice    = 0.60;      // Max spread to open a trade (USD); edge fades above ~0.8
 input double MaxDrawdownPct    = 0.0;       // Equity drawdown kill switch (% from peak), 0 = off
 input bool   CloseOnFriday     = false;     // Close positions on Friday evening
 input int    FridayCloseHour   = 21;        // Friday close hour (server time)

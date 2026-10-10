@@ -1,0 +1,37 @@
+{
+  "params": {
+    "SignalTF": "1h",
+    "DonchianPeriod": 200,
+    "TrendEMA": 0,
+    "ATRPeriod": 14,
+    "SL_ATR": 1.5,
+    "Trail_ATR": 5.0,
+    "TP_R": 0.0,
+    "MomentumBars": 0,
+    "MinMomentumATR": 5.0,
+    "VolBars": 168,
+    "VolLookbackDays": 250,
+    "LowVolRatio": 0.8,
+    "LowVolRiskMult": 2.0,
+    "RiskPercent": 1.5,
+    "MaxRiskAtMinLot": 6.0,
+    "MaxDrawdownPct": 0.0,
+    "CloseOnFriday": false,
+    "FridayCloseHour": 21
+  },
+  "stats": {
+    "start": 10000.0,
+    "final": 467651.34,
+    "multiple": 46.77,
+    "cagr_pct": 48.0,
+    "max_dd_pct": -36.6,
+    "trades": 452,
+    "win_rate_pct": 29.4,
+    "profit_factor": 1.59,
+    "avg_R": 0.493,
+    "best_R": 32.7,
+    "months_to_16_7x": 91.7,
+    "kill": false,
+    "skipped": 0
+  }
+}

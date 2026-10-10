@@ -1,0 +1,97 @@
+{
+  "config": {
+    "start_balance": 200.0,
+    "target": 3000.0,
+    "risk_pct": 30.0,
+    "floor": 80.0,
+    "time_box_days": 30,
+    "sessions": [
+      "london",
+      "ny"
+    ],
+    "news_blackout": true,
+    "news_calendar": "data/news-calendar.csv",
+    "risk_levels": [
+      10.0,
+      20.0,
+      30.0,
+      40.0,
+      50.0
+    ],
+    "tickets": 10000,
+    "seed": 20261010,
+    "trades_csv": "results/v4_10k_risk1.5/trades.csv",
+    "strategy": "GTB_v4",
+    "session_hours": {
+      "asia": [
+        1,
+        9
+      ],
+      "london": [
+        9,
+        17
+      ],
+      "ny": [
+        15,
+        23
+      ]
+    }
+  },
+  "seed": 20261010,
+  "distribution": {
+    "n": 368,
+    "n_raw": 452,
+    "win_rate": 0.29347826086956524,
+    "avg_R": 0.5262700224466141,
+    "trades_per_day": 0.10372771474878444,
+    "first": "2012-06-01 17:00:00",
+    "last": "2022-02-17 11:00:00"
+  },
+  "results": {
+    "10.0": {
+      "p_target": 0.0003,
+      "p_ruin": 0.0,
+      "p_timeout": 0.9997,
+      "median_final": 182.76110752269886,
+      "median_days_to_death": null,
+      "ev_per_dollar": 1.1625951330753008,
+      "mean_trades": 2.951
+    },
+    "20.0": {
+      "p_target": 0.0039,
+      "p_ruin": 0.0298,
+      "p_timeout": 0.9663,
+      "median_final": 160.54220304035798,
+      "median_days_to_death": 25.041666666666664,
+      "ev_per_dollar": 1.3460478309458048,
+      "mean_trades": 2.9323
+    },
+    "30.0": {
+      "p_target": 0.0105,
+      "p_ruin": 0.2034,
+      "p_timeout": 0.7861,
+      "median_final": 139.34677553740994,
+      "median_days_to_death": 21.333333333333332,
+      "ev_per_dollar": 1.5168543120103033,
+      "mean_trades": 2.7651
+    },
+    "40.0": {
+      "p_target": 0.0172,
+      "p_ruin": 0.4161,
+      "p_timeout": 0.5667,
+      "median_final": 118.03582613052832,
+      "median_days_to_death": 17.166666666666668,
+      "ev_per_dollar": 1.6581876256593135,
+      "mean_trades": 2.4334
+    },
+    "50.0": {
+      "p_target": 0.0242,
+      "p_ruin": 0.4829,
+      "p_timeout": 0.4929,
+      "median_final": 90.58216740335966,
+      "median_days_to_death": 16.916666666666668,
+      "ev_per_dollar": 1.7787218799396074,
+      "mean_trades": 2.3364
+    }
+  }
+}
