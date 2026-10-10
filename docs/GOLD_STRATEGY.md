@@ -32,5 +32,8 @@ Losing streaks of 10–12 trades happened in the backtest. Do not switch the EA 
 1. Copy `EA_Gold_TrendBreakout.mq5` to `MQL5/Experts/` and compile it in MetaEditor (F7).
 2. Open an **XAUUSD H1** chart and attach the EA. Enable Algo Trading.
 3. Inputs → Load → choose a preset from `Presets/`.
-4. Keep the terminal running 24/5 (VPS recommended). The trailing stop is updated by the EA.
-5. Verify in the MT5 Strategy Tester (XAUUSD, H1, "Every tick based on real ticks", your broker's data).
+4. Make sure at least **one year of H1 history** (~6,200 bars) is loaded: scroll the H1 chart back until it
+   stops loading, and set Tools → Options → Charts → "Max bars in chart" to 100,000 or more. Without it the
+   EA prints a warning and trades at base risk only (no volatility sizing).
+5. Keep the terminal running 24/5 (VPS recommended). The trailing stop is updated by the EA.
+6. Verify in the MT5 Strategy Tester (XAUUSD, H1, "Every tick based on real ticks", your broker's data).

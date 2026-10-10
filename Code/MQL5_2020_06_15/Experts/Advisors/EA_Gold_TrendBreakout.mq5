@@ -76,6 +76,7 @@ int      hATR = INVALID_HANDLE, hEMA = INVALID_HANDLE;
 datetime lastBarTime = 0;
 double   peakEquity  = 0;
 bool     killSwitch  = false;
+bool     volWarned   = false;
 
 //+------------------------------------------------------------------+
 //| Expert initialization                                            |
@@ -158,7 +159,9 @@ void OnTick()
    // Data-mined momentum filter
    if(MomentumBars > 0)
    {
-      double move = (iClose(_Symbol, SignalTF, 1) - iClose(_Symbol, SignalTF, 1 + MomentumBars)) * signal;
+      double past = iClose(_Symbol, SignalTF, 1 + MomentumBars);
+      if(past <= 0) return;   // not enough history
+      double move = (iClose(_Symbol, SignalTF, 1) - past) * signal;
       if(move < MinMomentumATR * atr) return;
    }
 
@@ -243,7 +246,18 @@ double VolatilityRatio()
 
    double closes[];
    ArraySetAsSeries(closes, true);
-   if(CopyClose(_Symbol, SignalTF, 1, need, closes) != need) return(0.0);
+   if(CopyClose(_Symbol, SignalTF, 1, need, closes) != need)
+   {
+      if(!volWarned)
+      {
+         volWarned = true;
+         PrintFormat("WARNING: need %d %s bars for the volatility regime but only %d loaded; "
+                     "trading at base risk until history is available (scroll the chart back / "
+                     "raise 'Max bars in chart').", need, EnumToString(SignalTF), Bars(_Symbol, SignalTF));
+      }
+      return(0.0);
+   }
+   volWarned = false;
 
    double samples[];
    ArrayResize(samples, VolLookbackDays);

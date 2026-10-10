@@ -58,6 +58,22 @@ All scripts are in [`research/`](research/). Set `GOLD_M15_CSV` to the data file
 6. **Final rule:** keep every breakout but **double the risk on low-volatility breakouts**. At the same
    drawdown, this beats flat sizing in both the tuning period and the unseen period.
 
+## Robustness of the volatility-sizing rule ($10,000, 2% base risk, precise M15 backtest)
+Flat sizing (no rule) gives ×10.9 overall: ×4.9 in 2012–18, ×2.3 in 2019–22 (unseen). Every variant below beats it in **both** periods.
+
+| Variant | Overall | 2012–18 | 2019–22 (unseen) | Max DD |
+|---|---|---|---|---|
+| Threshold 0.7 | ×15.8 | ×5.9 | ×2.7 | −26% |
+| **Threshold 0.8 (default)** | **×29.4** | **×9.8** | **×3.1** | **−33%** |
+| Threshold 0.9 | ×28.8 | ×8.1 | ×3.6 | −40% |
+| Threshold 1.0 | ×45.0 | ×8.6 | ×5.3 | −42% |
+| Multiplier ×1.5 | ×18.6 | ×7.1 | ×2.7 | −29% |
+| Multiplier ×3 | ×63.1 | ×16.4 | ×3.9 | −40% |
+| Volatility window 120 bars | ×25.5 | ×8.9 | ×2.9 | −30% |
+| Volatility window 240 bars | ×20.9 | ×8.4 | ×2.5 | −33% |
+| Median lookback 125 days | ×33.8 | ×7.9 | ×4.4 | −28% |
+| Median lookback 500 days | ×21.0 | ×8.4 | ×2.6 | −41% |
+
 ## Monte Carlo, $300 → $5,000 (v2 flat sizing, 2,000 reshuffles of the trade sequence)
 | Risk | Chance of reaching ×16.7 | Median time | Chance of a >50% drawdown | Chance of a >80% drawdown |
 |---|---|---|---|---|
